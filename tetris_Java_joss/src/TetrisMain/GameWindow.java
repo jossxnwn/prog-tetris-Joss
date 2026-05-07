@@ -8,79 +8,103 @@ import java.awt.event.KeyEvent;
 public class GameWindow extends JFrame {
     private BoardPanel boardPanel;
     private String currentPlayer;
+
     private JLabel scoreLabel;
+    private JLabel levelLabel;
+    private JLabel linesLabel;
+    private NextPiecePanel nextPiecePanel;
 
     public GameWindow(String player) {
         this.currentPlayer = player;
-        setTitle("Tetris - " + player);
+        setTitle("Tetris - Jugador: " + player);
         setSize(Setting.getWIDTH(), Setting.getHEIGHT());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        getContentPane().setBackground(new Color(210, 210, 210)); // Gris claro general
+        getContentPane().setBackground(new Color(210, 210, 210));
 
-        // Layout principal
         setLayout(new BorderLayout(10, 10));
         ((JPanel)getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Panel izquierdo: Tablero de juego
+        nextPiecePanel = new NextPiecePanel();
+
         boardPanel = new BoardPanel(this);
-        boardPanel.setPreferredSize(new Dimension(300, 600));
+        boardPanel.setPreferredSize(new Dimension(
+                (Setting.getCOLS() * Setting.getCELL_SIZE()) + 20,
+                (Setting.getROWS() * Setting.getCELL_SIZE()) + 20
+        ));
         add(boardPanel, BorderLayout.CENTER);
 
-        // Panel derecho: Stats y Puntuación
         JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
         rightPanel.setOpaque(false);
-        rightPanel.setPreferredSize(new Dimension(150, 600));
+        rightPanel.setPreferredSize(new Dimension(170, 750));
 
-        // Pieza Siguiente
-        RoundedPanel nextPiecePanel = new RoundedPanel(new BorderLayout(), new Color(160, 160, 160));
-        nextPiecePanel.setPreferredSize(new Dimension(150, 150));
-        // Aquí iría la lógica de pintar la siguiente pieza
-        
-        // Puntuación
-        RoundedPanel scorePanel = new RoundedPanel(new BorderLayout(), new Color(160, 160, 160));
-        scorePanel.setPreferredSize(new Dimension(150, 60));
-        scoreLabel = new JLabel("Puntuacion: 0", SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        scorePanel.add(scoreLabel, BorderLayout.CENTER);
-
-        // Contenedor superior derecho
         JPanel topRight = new JPanel(new BorderLayout(0, 10));
         topRight.setOpaque(false);
         topRight.add(nextPiecePanel, BorderLayout.NORTH);
-        topRight.add(scorePanel, BorderLayout.SOUTH);
 
-        // Estadísticas
-        RoundedPanel statsPanel = new RoundedPanel(new FlowLayout(), new Color(160, 160, 160));
-        statsPanel.add(new JLabel("Stats"));
-        // Aquí se pueden añadir los paneles blancos internos que tienes en tu diseño
+        RoundedPanel statsPanel = new RoundedPanel(new GridLayout(3, 1, 5, 5), new Color(160, 160, 160));
+        statsPanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
+
+        Font hudFont = new Font("Arial", Font.BOLD, 15);
+        scoreLabel = new JLabel("Puntos: 0", SwingConstants.CENTER);
+        levelLabel = new JLabel("Nivel: " + Setting.getSTARTING_LEVEL(), SwingConstants.CENTER);
+        linesLabel = new JLabel("Líneas: 0", SwingConstants.CENTER);
+
+        scoreLabel.setFont(hudFont);
+        levelLabel.setFont(hudFont);
+        linesLabel.setFont(hudFont);
+
+        statsPanel.add(scoreLabel);
+        statsPanel.add(levelLabel);
+        statsPanel.add(linesLabel);
+
+        topRight.add(statsPanel, BorderLayout.SOUTH);
+
+        RoundedPanel controlsPanel = new RoundedPanel(new GridLayout(5, 1, 2, 2), new Color(160, 160, 160));
+        controlsPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+        controlsPanel.add(new JLabel("CONTROLES", SwingConstants.CENTER));
+        controlsPanel.add(new JLabel("← / → : Mover", SwingConstants.CENTER));
+        controlsPanel.add(new JLabel("↑ : Rotar", SwingConstants.CENTER));
+        controlsPanel.add(new JLabel("↓ : Soft Drop", SwingConstants.CENTER));
+        controlsPanel.add(new JLabel("Espacio : Hard Drop", SwingConstants.CENTER));
 
         rightPanel.add(topRight, BorderLayout.NORTH);
-        rightPanel.add(statsPanel, BorderLayout.CENTER);
+        rightPanel.add(controlsPanel, BorderLayout.SOUTH);
 
         add(rightPanel, BorderLayout.EAST);
 
-        // Controles de teclado
+        // --- NUEVO: ESCUCHAMOS TANTO PRESIONAR COMO SOLTAR LA TECLA ---
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 boardPanel.handleInput(e.getKeyCode());
             }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                boardPanel.handleKeyRelease(e.getKeyCode());
+            }
         });
         setFocusable(true);
     }
 
-    public void updateScore(int score) {
-        scoreLabel.setText("Puntuacion: " + score);
+    public void updateStats(int score, int level, int lines) {
+        scoreLabel.setText("Puntos: " + score);
+        levelLabel.setText("Nivel: " + level);
+        linesLabel.setText("Líneas: " + lines);
     }
 
-    /**
-     * Funcion para parar el juego
-     * @param finalScore
-     */
+    public void updateNextPiece(Piece piece) {
+        if (nextPiecePanel != null) {
+            nextPiecePanel.setNextPiece(piece);
+        }
+    }
+
     public void gameOver(int finalScore) {
         DatabaseManager.saveRecord(currentPlayer, finalScore);
         JOptionPane.showMessageDialog(this, "Game Over! Puntuación guardada: " + finalScore);
-        System.exit(0);
+        boardPanel.stopTimers(); // Apagamos los temporizadores al perder
+        this.dispose();
+        new MainMenuWindow(currentPlayer).setVisible(true);
     }
 }

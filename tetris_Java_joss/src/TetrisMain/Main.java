@@ -8,10 +8,10 @@ public class Main {
             if (Setting.getLogin()){
                 LoginWindow login = new LoginWindow();
                 login.setVisible(true);
-            }else {
-                new GameWindow("userTest").setVisible(true);
+            } else {
+                // Abre el menú en lugar de la ventana de juego directamente
+                new MainMenuWindow("userTest").setVisible(true);
             }
-
         });
     }
 }

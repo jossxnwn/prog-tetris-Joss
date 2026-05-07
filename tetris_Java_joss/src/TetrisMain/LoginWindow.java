@@ -38,8 +38,8 @@ public class LoginWindow extends JFrame {
 
         if (user.equals("test") && pass.equals("test123")) {
             JOptionPane.showMessageDialog(this, "Login exitoso");
-            this.dispose(); // Cierra el login
-            new GameWindow(user).setVisible(true); // Abre el juego
+            this.dispose();
+            new MainMenuWindow(user).setVisible(true); // Redirige al Menú Principal
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
         }
