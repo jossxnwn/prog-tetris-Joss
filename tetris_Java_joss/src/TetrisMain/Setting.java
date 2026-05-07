@@ -81,7 +81,7 @@ public class Setting {
     /*Configuracion del login*/
     private static boolean LOGIN = false;
 
-    public static boolean getLogin(){
+    public static boolean  getLogin(){
         return LOGIN;
     }
 
