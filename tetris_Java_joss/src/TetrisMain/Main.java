@@ -1,5 +1,9 @@
 package TetrisMain;
 
+import TetrisMain.view.LoginWindow;
+import TetrisMain.view.MainMenuWindow;
+import TetrisMain.model.Setting;
+
 import javax.swing.SwingUtilities;
 
 public class Main {
