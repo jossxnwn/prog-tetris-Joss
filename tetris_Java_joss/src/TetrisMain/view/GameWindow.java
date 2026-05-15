@@ -102,9 +102,9 @@ public class GameWindow extends JFrame {
         linesLabel.setText("Líneas: " + lines);
     }
 
-    public void updateNextPiece(Piece piece) {
+    public void updateNextPiece(PiezaBase piezaBase) {
         if (nextPiecePanel != null) {
-            nextPiecePanel.setNextPiece(piece);
+            nextPiecePanel.setNextPiece(piezaBase);
         }
     }
 

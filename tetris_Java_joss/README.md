@@ -175,11 +175,27 @@ El desarrollo se estima en **14 días de trabajo efectivo** distribuidos en **5 
 # 3. Desarrollo del proyecto
 
 ## Diseño
-(Mockups)
+![](./src/img/imagen.png)
 
 ## Arquitectura
-(Arquitectura de software)
 
+**Trayectora en mi proyecto:**
+
+- **1** **I: Diseño** Primera semana, use completamente la ia ara poder realizar la interfaz grafica del juego inspirandome en el boceto previamente hecho.
+- **2** **II: Dibujado** Segunda semana, use parcialmente la ia para poder pintar las fichas en el tablero de juego.
+- **3** **III: Rotacion** Tercera semana, use completamente la ia para poder rotar las piezas en el tablero, lo que hacia era pintarlas en el tablero y luego usar un metodo llamado rotar que lo que hacia es mover los valores de un array 4x4 uno a uno rotandolo en sentido antihorario.
+- **4** **IV: Caida** cuarta semana, use parcialmente la ia para poder realizar las caidas de la pieza, aprendi sobre Timer, actualizaciones de una matriz y el tiempo de caida de las piezas, asi mismo como aumenta parcialmente el Score del jugador.
+- **5** **V: Configuracion** Quinta semana, sin uso de la ia, esa semana comprendi completamente el funcionamiento de mi codigo aprendido la logica previamente usada, empeze a usar programacion orientada a objetos para poder hacer una clase Settings y que pueda configurar todo de mi juego desde ahi.
+- **6** **IV: Bugs** Sexta y ultima semana, sin uso de la ia, corregi un bug de Score que tenia el juego, multiplicando constantemente la cantidad haciendo cantidades exorbitantes, corregi el giro de la piezas que al girar al lado de una pared se quedaban estancadas.
+
+**Funcionamiento de mi codigo:**
+
+Main es el iniciador de todo llamando a la funcion que arranca el controlador y el bucle principal del juego (Timer). A partir de ahí, el juego se apoya en una arquitectura Modelo-Vista-Controlador (MVC) para separar la lógica de los datos, la interfaz gráfica y los eventos del teclado.
+
+- **Caída de piezas:** La gravedad está gestionada por un `Timer` de Java. En cada "tick" (actualización), la pieza activa desciende una posición en la matriz del tablero. A medida que el jugador avanza y acumula puntos, el intervalo del `Timer` se reduce, aumentando la velocidad de caída de las piezas.
+- **Rotación:** Las piezas (manejadas internamente como matrices de 4x4) rotan transponiendo y reordenando sus valores en sentido antihorario. Se implementó una lógica de corrección (*Wall Kick*) para que, si el jugador gira una pieza pegada a un borde, esta se desplace y no se quede atascada en la pared.
+- **Sistema de colisiones:** Antes de que una pieza se mueva o baje, se proyecta su siguiente posición en la matriz principal del tablero. Si esa posición excede los límites o ya está ocupada por otra pieza (un valor distinto de cero), se detecta la colisión. Si la colisión es hacia abajo, la pieza se detiene, sus valores se "imprimen" permanentemente en la matriz del tablero y se llama a la siguiente pieza.
+- **Líneas y Puntaje (Score):** Inmediatamente después de que una pieza se queda parada, el código revisa la matriz buscando filas completamente llenas. Si encuentra una o más, las elimina, baja todas las filas superiores para llenar el hueco, y añade los puntos correspondientes al *Score*. Esta sección incluye la corrección del bug que multiplicaba constantemente la cantidad para asegurar que la puntuación sea exacta.
 
 # 4. Propuestas de mejora
 - **Animaciones**: Explosión cuando se completa una fila.

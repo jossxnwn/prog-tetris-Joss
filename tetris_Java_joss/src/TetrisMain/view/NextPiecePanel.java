@@ -1,19 +1,19 @@
 package TetrisMain.view;
 
-import TetrisMain.model.Piece;
+import TetrisMain.model.PiezaBase;
 
 import java.awt.*;
 
 public class NextPiecePanel extends RoundedPanel {
-    private Piece nextPiece;
+    private PiezaBase nextPiezaBase;
 
     public NextPiecePanel() {
         super(null, new Color(160, 160, 160));
         setPreferredSize(new Dimension(150, 150));
     }
 
-    public void setNextPiece(Piece piece) {
-        this.nextPiece = piece;
+    public void setNextPiece(PiezaBase piezaBase) {
+        this.nextPiezaBase = piezaBase;
         repaint();
     }
 
@@ -21,10 +21,10 @@ public class NextPiecePanel extends RoundedPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (nextPiece == null) return;
+        if (nextPiezaBase == null) return;
 
         Graphics2D g2d = (Graphics2D) g;
-        int[][] shape = nextPiece.getShape();
+        int[][] shape = nextPiezaBase.getShape();
 
         int panelWidth = getWidth();
         int panelHeight = getHeight();
@@ -42,7 +42,7 @@ public class NextPiecePanel extends RoundedPanel {
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[i].length; j++) {
                 if (shape[i][j] != 0) {
-                    drawBlock(g2d, startX + (j * currentCellSize), startY + (i * currentCellSize), nextPiece.getColor(), currentCellSize);
+                    drawBlock(g2d, startX + (j * currentCellSize), startY + (i * currentCellSize), nextPiezaBase.getColor(), currentCellSize);
                 }
             }
         }

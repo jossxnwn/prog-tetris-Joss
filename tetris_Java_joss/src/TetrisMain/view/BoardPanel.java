@@ -58,20 +58,20 @@ public class BoardPanel extends RoundedPanel {
             }
         }
 
-        Piece currentPiece = model.getCurrentPiece();
-        if (currentPiece != null) {
-            int[][] shape = currentPiece.getShape();
+        PiezaBase currentPiezaBase = model.getCurrentPiece();
+        if (currentPiezaBase != null) {
+            int[][] shape = currentPiezaBase.getShape();
 
-            int ghostY = currentPiece.getY();
-            while (model.canMove(currentPiece.getX(), ghostY + 1, shape)) {
+            int ghostY = currentPiezaBase.getY();
+            while (model.canMove(currentPiezaBase.getX(), ghostY + 1, shape)) {
                 ghostY++;
             }
 
             for (int i = 0; i < shape.length; i++) {
                 for (int j = 0; j < shape[i].length; j++) {
                     if (shape[i][j] != 0) {
-                        drawGhostBlock(g2d, offsetX + (currentPiece.getX() + j) * currentCellSize,
-                                offsetY + (ghostY + i) * currentCellSize, currentPiece.getColor(), currentCellSize);
+                        drawGhostBlock(g2d, offsetX + (currentPiezaBase.getX() + j) * currentCellSize,
+                                offsetY + (ghostY + i) * currentCellSize, currentPiezaBase.getColor(), currentCellSize);
                     }
                 }
             }
@@ -79,8 +79,8 @@ public class BoardPanel extends RoundedPanel {
             for (int i = 0; i < shape.length; i++) {
                 for (int j = 0; j < shape[i].length; j++) {
                     if (shape[i][j] != 0) {
-                        drawBlock(g2d, offsetX + (currentPiece.getX() + j) * currentCellSize,
-                                offsetY + (currentPiece.getY() + i) * currentCellSize, currentPiece.getColor(), currentCellSize);
+                        drawBlock(g2d, offsetX + (currentPiezaBase.getX() + j) * currentCellSize,
+                                offsetY + (currentPiezaBase.getY() + i) * currentCellSize, currentPiezaBase.getColor(), currentCellSize);
                     }
                 }
             }

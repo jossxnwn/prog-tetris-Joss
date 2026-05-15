@@ -2,7 +2,7 @@ package TetrisMain.model;
 
 import java.awt.Color;
 
-public abstract class Piece {
+public abstract class PiezaBase {
     protected int[][] shape;
     protected Color color;
     protected int x, y;
@@ -10,7 +10,7 @@ public abstract class Piece {
     /**
      * Metodo de ubicacion de aparicion de la pieza
      */
-    public Piece() {
+    public PiezaBase() {
         this.x = 3; // Aparece centrada en un tablero de 10 de ancho
         this.y = 0; // Aparece arriba
     }

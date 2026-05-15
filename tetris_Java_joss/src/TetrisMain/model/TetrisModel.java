@@ -7,8 +7,8 @@ public class TetrisModel {
     private final int COLS = Setting.getCOLS();
     private Color[][] grid = new Color[ROWS][COLS];
 
-    private Piece currentPiece;
-    private Piece nextPiece;
+    private PiezaBase currentPiezaBase;
+    private PiezaBase nextPiezaBase;
 
     private int score = 0;
     private int level = Setting.getSTARTING_LEVEL();
@@ -16,12 +16,12 @@ public class TetrisModel {
     private int streak = 0;
 
     public TetrisModel() {
-        this.nextPiece = PieceFactory.getRandomPiece();
+        this.nextPiezaBase = PieceFactory.getRandomPiece();
     }
 
     public void spawnPiece() {
-        currentPiece = nextPiece;
-        nextPiece = PieceFactory.getRandomPiece();
+        currentPiezaBase = nextPiezaBase;
+        nextPiezaBase = PieceFactory.getRandomPiece();
     }
 
     public boolean canMove(int newX, int newY, int[][] shape) {
@@ -40,13 +40,13 @@ public class TetrisModel {
     }
 
     public void lockPiece() {
-        int[][] shape = currentPiece.getShape();
+        int[][] shape = currentPiezaBase.getShape();
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[i].length; j++) {
                 if (shape[i][j] != 0) {
-                    int boardY = currentPiece.getY() + i;
-                    int boardX = currentPiece.getX() + j;
-                    if (boardY >= 0) grid[boardY][boardX] = currentPiece.getColor();
+                    int boardY = currentPiezaBase.getY() + i;
+                    int boardX = currentPiezaBase.getX() + j;
+                    if (boardY >= 0) grid[boardY][boardX] = currentPiezaBase.getColor();
                 }
             }
         }
@@ -107,8 +107,8 @@ public class TetrisModel {
     }
 
     public Color[][] getGrid() { return grid; }
-    public Piece getCurrentPiece() { return currentPiece; }
-    public Piece getNextPiece() { return nextPiece; }
+    public PiezaBase getCurrentPiece() { return currentPiezaBase; }
+    public PiezaBase getNextPiece() { return nextPiezaBase; }
     public int getScore() { return score; }
     public int getLevel() { return level; }
     public int getLines() { return linesClearedTotal; }

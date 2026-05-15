@@ -1,9 +1,9 @@
 package TetrisMain.model.Pieces;
-import TetrisMain.model.Piece;
+import TetrisMain.model.PiezaBase;
 import TetrisMain.model.Setting;
 
-public class PieceJ extends Piece {
-    public PieceJ() {
+public class PiezaBaseJ extends PiezaBase {
+    public PiezaBaseJ() {
         super();
         this.color = Setting.getColorPieceJ();
         this.shape = new int[][] {

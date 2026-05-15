@@ -1,15 +1,15 @@
 package TetrisMain.model.Pieces;
-import TetrisMain.model.Piece;
+import TetrisMain.model.PiezaBase;
 import TetrisMain.model.Setting;
 
-public class PieceZ extends Piece {
-    public PieceZ() {
+public class PiezaBaseS extends PiezaBase {
+    public PiezaBaseS() {
         super();
-        this.color = Setting.getColorPieceZ();
+        this.color = Setting.getColorPieceS();
         this.shape = new int[][] {
                 {0, 0, 0, 0},
-                {0, 1, 1, 0},
                 {0, 0, 1, 1},
+                {0, 1, 1, 0},
                 {0, 0, 0, 0}
         };
     }
