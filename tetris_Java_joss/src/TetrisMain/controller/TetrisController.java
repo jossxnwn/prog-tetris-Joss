@@ -98,7 +98,7 @@ public class TetrisController {
         model.lockPiece();
         int lines = model.checkLines();
         // (El método updateScore cambiará en el Ejercicio 3, lo actualizamos luego)
-        model.updateScore(lines, model.getCurrentPiece().getMultiplicadorPuntuacion(), 2);
+        model.updateScore(lines, model.getCurrentPiece().getMultiplicadorPuntuacion());
         updateSpeed();
 
         model.spawnPiece();
@@ -230,4 +230,5 @@ public class TetrisController {
             inputTimer.start();
         }
     }
+
 }

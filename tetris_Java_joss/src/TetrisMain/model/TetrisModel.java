@@ -91,7 +91,7 @@ public class TetrisModel implements Reiniciable {
         return linesClearedThisTurn;
     }
 
-    public void updateScore(int lines, int multiplicadorPuntuacion, int multiplicadorPieza) {
+    public void updateScore(int lines, int multiplicadorPuntuacion) {
         if (lines > 0) {
             streak++;
             int basePoints = 0;
@@ -105,7 +105,7 @@ public class TetrisModel implements Reiniciable {
             else if (streak == 3) multiplier = 1.5;
             else if (streak >= 4) multiplier = Math.pow(2, streak - 3);
 
-            score += (int) (basePoints * multiplier * multiplicadorPieza);
+            score += (int) (basePoints * multiplier);
             linesClearedTotal += lines;
 
             int newLevel = (int) Math.floor(Math.sqrt((double) score / 500.0)) + 1;
@@ -123,6 +123,9 @@ public class TetrisModel implements Reiniciable {
 
     public void addHardDropPoints(int rowsDropped) {
         score += (rowsDropped * 2);
+    }
+    public void addSoftDropPoints(int rows, int multiplicador) {
+        this.score += (rows * multiplicador);
     }
 
     public Color[][] getGrid() { return grid; }
