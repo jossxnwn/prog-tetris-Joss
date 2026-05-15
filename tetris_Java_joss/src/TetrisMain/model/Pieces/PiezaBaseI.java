@@ -1,9 +1,10 @@
 package TetrisMain.model.Pieces;
+import TetrisMain.model.MatrizInvalidaException;
 import TetrisMain.model.PiezaBase;
 import TetrisMain.model.Setting;
 
 public class PiezaBaseI extends PiezaBase {
-    public PiezaBaseI() {
+    public PiezaBaseI() throws MatrizInvalidaException {
         super();
         this.color = Setting.getColorPieceI();
         this.shape = new int[][] {
@@ -12,5 +13,6 @@ public class PiezaBaseI extends PiezaBase {
                 {0, 0, 0, 0},
                 {0, 0, 0, 0}
         };
+        validarForma();
     }
 }

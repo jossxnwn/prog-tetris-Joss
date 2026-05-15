@@ -84,7 +84,13 @@ public class GameWindow extends JFrame {
         // PASAMOS LOS EVENTOS DE TECLADO AL CONTROLADOR
         addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e) { controller.handleKeyPress(e.getKeyCode()); }
+            public void keyPressed(KeyEvent e) {
+                try {
+                    controller.handleKeyPress(e.getKeyCode());
+                } catch (MatrizInvalidaException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
             @Override
             public void keyReleased(KeyEvent e) { controller.handleKeyRelease(e.getKeyCode()); }
         });

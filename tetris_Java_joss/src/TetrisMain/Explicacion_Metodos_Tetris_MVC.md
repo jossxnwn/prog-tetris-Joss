@@ -83,6 +83,8 @@ La ventana principal que ensambla el juego.
 ### `RoundedPanel.java`
 * Componente base estético que dibuja fondos con bordes redondeados y contornos suavizados (*Antialiasing*) para todos los menús y paneles del juego.
 
+### `Validar Forma`
+* Funcion validar forma lo comprueba en forma de la matriz recorriendola y comprobando su longitud
 ---
 
 ## 🚀 5. Flujo de Ejecución

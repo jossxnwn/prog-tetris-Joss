@@ -12,7 +12,6 @@ public class Setting {
     public static int getCELL_SIZE() { return CELL_SIZE; }
     public static void setCELL_SIZE(int size) { CELL_SIZE = size; }
 
-    private static Color COLOR_PIECE_PINT = Color.PINK;
     private static Color COLOR_PIECE_I = Color.CYAN;
     private static Color COLOR_PIECE_O = Color.YELLOW;
     private static Color COLOR_PIECE_T = Color.MAGENTA;
@@ -21,8 +20,8 @@ public class Setting {
     private static Color COLOR_PIECE_PIECEMYSTERY = Color.DARK_GRAY;
     private static Color COLOR_PIECE_J = Color.BLUE;
     private static Color COLOR_PIECE_L = Color.ORANGE;
+    private static Color COLOR_PIECE_E = Color.LIGHT_GRAY;
 
-    public static Color getColorPiecePint() { return COLOR_PIECE_PINT; }
     public static Color getColorPieceI() { return COLOR_PIECE_I; }
     public static Color getColorPieceO() { return COLOR_PIECE_O; }
     public static Color getColorPieceT() { return COLOR_PIECE_T; }
@@ -31,6 +30,9 @@ public class Setting {
     public static Color getColorPiecePiecemystery() { return COLOR_PIECE_PIECEMYSTERY; }
     public static Color getColorPieceJ() { return COLOR_PIECE_J; }
     public static Color getColorPieceL() { return COLOR_PIECE_L; }
+    public static Color getColorPieceE1() { return COLOR_PIECE_E ;}
+    public static Color getColorPieceE2() { return COLOR_PIECE_E ;}
+
 
     private static int WIDTH = 480;
     private static int HEIGHT = 680;

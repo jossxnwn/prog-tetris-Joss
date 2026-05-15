@@ -2,10 +2,11 @@ package TetrisMain.model;
 
 import java.awt.Color;
 
-public class TetrisModel {
+public class TetrisModel implements Reiniciable {
     private final int ROWS = Setting.getROWS();
     private final int COLS = Setting.getCOLS();
     private Color[][] grid = new Color[ROWS][COLS];
+    private boolean isGameOver = false;
 
     private PiezaBase currentPiezaBase;
     private PiezaBase nextPiezaBase;
@@ -15,6 +16,18 @@ public class TetrisModel {
     private int linesClearedTotal = 0;
     private int streak = 0;
 
+    @Override
+    public void reiniciar() {
+        this.grid = new Color[ROWS][COLS];
+        this.score = 0;
+        this.level = Setting.getSTARTING_LEVEL();
+        this.linesClearedTotal = 0;
+        this.streak = 0;
+        this.isGameOver = false;
+        this.nextPiezaBase = PieceFactory.getRandomPiece();
+        spawnPiece();
+    }
+
     public TetrisModel() {
         this.nextPiezaBase = PieceFactory.getRandomPiece();
     }
@@ -23,6 +36,8 @@ public class TetrisModel {
         currentPiezaBase = nextPiezaBase;
         nextPiezaBase = PieceFactory.getRandomPiece();
     }
+    public boolean isGameOver() { return isGameOver; }
+    public void setGameOver(boolean gameOver) { isGameOver = gameOver; }
 
     public boolean canMove(int newX, int newY, int[][] shape) {
         for (int i = 0; i < shape.length; i++) {
@@ -76,7 +91,7 @@ public class TetrisModel {
         return linesClearedThisTurn;
     }
 
-    public void updateScore(int lines) {
+    public void updateScore(int lines, int multiplicadorPuntuacion, int multiplicadorPieza) {
         if (lines > 0) {
             streak++;
             int basePoints = 0;
@@ -90,7 +105,7 @@ public class TetrisModel {
             else if (streak == 3) multiplier = 1.5;
             else if (streak >= 4) multiplier = Math.pow(2, streak - 3);
 
-            score += (int) (basePoints * multiplier);
+            score += (int) (basePoints * multiplier * multiplicadorPieza);
             linesClearedTotal += lines;
 
             int newLevel = (int) Math.floor(Math.sqrt((double) score / 500.0)) + 1;
@@ -100,6 +115,10 @@ public class TetrisModel {
         } else {
             streak = 0;
         }
+    }
+
+    public void setNextPiece(PiezaBase pieza) {
+        this.nextPiezaBase = pieza;
     }
 
     public void addHardDropPoints(int rowsDropped) {

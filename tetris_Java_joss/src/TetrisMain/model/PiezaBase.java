@@ -2,7 +2,7 @@ package TetrisMain.model;
 
 import java.awt.Color;
 
-public abstract class PiezaBase {
+public abstract class PiezaBase implements PuntuacionPieza{
     protected int[][] shape;
     protected Color color;
     protected int x, y;
@@ -10,10 +10,16 @@ public abstract class PiezaBase {
     /**
      * Metodo de ubicacion de aparicion de la pieza
      */
-    public PiezaBase() {
+    public PiezaBase() throws MatrizInvalidaException{
         this.x = 3; // Aparece centrada en un tablero de 10 de ancho
         this.y = 0; // Aparece arriba
     }
+
+    @Override
+    public int getMultiplicadorPuntuacion (){
+        return 1;
+    }
+
 
     /*Getters y setters*/
     public int[][] getShape() { return shape; }
@@ -35,5 +41,21 @@ public abstract class PiezaBase {
             }
         }
         shape = rotated;
+    }
+
+    public void validarForma() throws MatrizInvalidaException{
+        if (shape == null || shape.length !=4){
+            throw new MatrizInvalidaException("Error: error en la dimension");
+        }
+        for (int [] fila : shape){
+            if (fila.length != 4){
+                throw new MatrizInvalidaException("Error: error en la dimension");
+            }
+            for (int valor : fila){
+                if (valor != 0 && valor != 1){
+                    throw new MatrizInvalidaException("Error: error de valor");
+                }
+            }
+        }
     }
 }

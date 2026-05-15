@@ -27,6 +27,11 @@ public class TetrisController {
     private final int ARR = 30;
     private final int SOFT_DROP_RATE = 30;
 
+    private int reiniciosDisponibles = 5;
+    private long lastRPressTime = 0;
+
+
+
     public TetrisController(TetrisModel model, GameWindow view) {
         this.model = model;
         this.view = view;
@@ -34,6 +39,7 @@ public class TetrisController {
         view.updateNextPiece(model.getNextPiece());
         initTimers();
     }
+
 
     private void initTimers() {
         gameTimer = new Timer(800, e -> updateGame());
@@ -91,15 +97,15 @@ public class TetrisController {
     private void handleCollision() {
         model.lockPiece();
         int lines = model.checkLines();
-        model.updateScore(lines);
+        // (El método updateScore cambiará en el Ejercicio 3, lo actualizamos luego)
+        model.updateScore(lines, model.getCurrentPiece().getMultiplicadorPuntuacion(), 2);
         updateSpeed();
 
         model.spawnPiece();
 
-        // Detectar si hay Game Over justo después de aparecer
         if (!model.canMove(model.getCurrentPiece().getX(), model.getCurrentPiece().getY(), model.getCurrentPiece().getShape())) {
             stopTimers();
-            view.gameOver(model.getScore());
+            model.setGameOver(true); // AHORA MARCAMOS EL GAME OVER
             return;
         }
 
@@ -107,7 +113,7 @@ public class TetrisController {
         view.updateNextPiece(model.getNextPiece());
     }
 
-    public void handleKeyPress(int keyCode) {
+    public void handleKeyPress(int keyCode) throws MatrizInvalidaException {
         if (model.getCurrentPiece() == null) return;
         long now = System.currentTimeMillis();
 
@@ -152,6 +158,40 @@ public class TetrisController {
                 }
                 updateGame();
                 break;
+            case KeyEvent.VK_R:
+                if (reiniciosDisponibles > 0) {
+                    // Eliminamos la línea "long now = System.currentTimeMillis();" porque ya existe arriba
+
+                    if (model.isGameOver()) {
+                        // Un solo toque si es Game Over
+                        ejecutarReinicio();
+                    } else {
+                        // Doble toque si el juego está en curso (ej: 500 ms de margen)
+                        if (now - lastRPressTime < 500) {
+                            ejecutarReinicio();
+                            lastRPressTime = 0; // Resetear el tiempo
+                        } else {
+                            lastRPressTime = now;
+                        }
+                    }
+                }
+                break;
+            case KeyEvent.VK_1:
+                try{
+                    model.setNextPiece(new TetrisMain.model.Pieces.PiezaE1());
+                    view.updateNextPiece(model.getNextPiece());
+                }catch (MatrizInvalidaException e){
+                    System.err.println(e.getMessage());
+                }
+                break;
+
+            case KeyEvent.VK_2:
+                try{
+                    model.setNextPiece(new TetrisMain.model.Pieces.PiezaE2());
+                    view.updateNextPiece(model.getNextPiece());
+                } catch (MatrizInvalidaException e){
+                    System.err.println(e.getMessage());
+                }
         }
         view.getBoardPanel().repaint();
     }
@@ -177,5 +217,17 @@ public class TetrisController {
         else if (level >= 9) delay = 200; // Puedes ajustarlo
 
         if(gameTimer != null) gameTimer.setDelay(delay);
+    }
+    private void ejecutarReinicio() {
+        model.reiniciar();
+        reiniciosDisponibles--;
+        view.updateStats(model.getScore(), model.getLevel(), model.getLines());
+        view.updateNextPiece(model.getNextPiece());
+
+        if (model.isGameOver()) {
+            model.setGameOver(false);
+            gameTimer.start();
+            inputTimer.start();
+        }
     }
 }
