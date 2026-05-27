@@ -115,8 +115,20 @@ public class TetrisController {
 
     public void handleKeyPress(int keyCode) throws MatrizInvalidaException {
         if (model.getCurrentPiece() == null) return;
-        long now = System.currentTimeMillis();
 
+        // --- AÑADE ESTAS 3 LÍNEAS AQUÍ ---
+        // Si hay Game Over, bloqueamos todas las teclas EXCEPTO la tecla 'R'
+        if (model.isGameOver() && keyCode != KeyEvent.VK_R) {
+            stopTimers();
+            model.setGameOver(true); // AHORA MARCAMOS EL GAME OVER
+            javax.swing.JOptionPane.showMessageDialog(view,
+                    "¡GAME OVER!\nPuntuación final: " + model.getScore() + "\nPulsa 'R' para reiniciar.");
+            // -----------------------------
+            return;
+        }
+        // ---------------------------------
+
+        long now = System.currentTimeMillis();
         switch (keyCode) {
             case KeyEvent.VK_LEFT:
                 if (!leftPressed) {
@@ -197,6 +209,7 @@ public class TetrisController {
     }
 
     public void handleKeyRelease(int keyCode) {
+        if (model.isGameOver()) return;
         switch (keyCode) {
             case KeyEvent.VK_LEFT: leftPressed = false; break;
             case KeyEvent.VK_RIGHT: rightPressed = false; break;
@@ -224,11 +237,8 @@ public class TetrisController {
         view.updateStats(model.getScore(), model.getLevel(), model.getLines());
         view.updateNextPiece(model.getNextPiece());
 
-        if (model.isGameOver()) {
-            model.setGameOver(false);
-            gameTimer.start();
-            inputTimer.start();
-        }
+        gameTimer.start();
+        inputTimer.start();
     }
 
 }

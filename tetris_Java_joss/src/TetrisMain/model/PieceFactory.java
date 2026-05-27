@@ -12,7 +12,7 @@ public class PieceFactory {
 
             if (chanceSecret == 0) return new PiezaBaseMystery();
             if (chanceSecret == 1) return new PiezaE1();
-            if (chanceSecret == 1) return new PiezaE2();
+            if (chanceSecret == 2) return new PiezaE2();
 
             // 7 Piezas Clásicas si no salta la secreta
             int pieceType = rand.nextInt(7);

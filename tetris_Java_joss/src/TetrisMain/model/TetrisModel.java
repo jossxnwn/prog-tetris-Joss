@@ -105,6 +105,9 @@ public class TetrisModel implements Reiniciable {
             else if (streak == 3) multiplier = 1.5;
             else if (streak >= 4) multiplier = Math.pow(2, streak - 3);
 
+            score += (int) (basePoints * multiplier * multiplicadorPuntuacion);
+            linesClearedTotal += lines;
+
             score += (int) (basePoints * multiplier);
             linesClearedTotal += lines;
 
