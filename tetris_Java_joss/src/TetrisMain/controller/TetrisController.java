@@ -105,7 +105,8 @@ public class TetrisController {
 
         if (!model.canMove(model.getCurrentPiece().getX(), model.getCurrentPiece().getY(), model.getCurrentPiece().getShape())) {
             stopTimers();
-            model.setGameOver(true); // AHORA MARCAMOS EL GAME OVER
+            model.setGameOver(true);
+            view.gameOver(model.getScore()); // <-- ¡SOLUCIÓN! Envía la señal al flujo para guardar récord, avisar y volver al menú
             return;
         }
 
@@ -118,12 +119,9 @@ public class TetrisController {
 
         // --- AÑADE ESTAS 3 LÍNEAS AQUÍ ---
         // Si hay Game Over, bloqueamos todas las teclas EXCEPTO la tecla 'R'
-        if (model.isGameOver() && keyCode != KeyEvent.VK_R) {
-            stopTimers();
-            model.setGameOver(true); // AHORA MARCAMOS EL GAME OVER
-            javax.swing.JOptionPane.showMessageDialog(view,
-                    "¡GAME OVER!\nPuntuación final: " + model.getScore() + "\nPulsa 'R' para reiniciar.");
-            // -----------------------------
+        // Si hay Game Over, bloqueamos las pulsaciones de manera silenciosa para no acumular popups modales
+        // Simplemente ignoramos cualquier pulsación de tecla para evitar el spam y duplicidad de pop-ups
+        if (model.isGameOver()) {
             return;
         }
         // ---------------------------------

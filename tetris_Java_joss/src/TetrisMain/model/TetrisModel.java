@@ -107,10 +107,6 @@ public class TetrisModel implements Reiniciable {
 
             score += (int) (basePoints * multiplier * multiplicadorPuntuacion);
             linesClearedTotal += lines;
-
-            score += (int) (basePoints * multiplier);
-            linesClearedTotal += lines;
-
             int newLevel = (int) Math.floor(Math.sqrt((double) score / 500.0)) + 1;
             if (newLevel > level) {
                 level = newLevel;

@@ -27,11 +27,13 @@ public class PieceFactory {
                 default: return new PiezaBaseL();
 
             }
-        }
-        catch (MatrizInvalidaException e){
-            System.out.println("Estado incoherente: " + e);
-            System.exit(1);
-            return null;
+        } catch (MatrizInvalidaException e){
+            System.err.println("Advertencia: Recuperando de falla en PieceFactory: " + e.getMessage());
+            try {
+                return new PiezaBaseI(); // Devuelve una pieza 'I' clásica de reserva segura para no romper la partida
+            } catch (MatrizInvalidaException ex) {
+                return null;
+            }
         }
     }
 }

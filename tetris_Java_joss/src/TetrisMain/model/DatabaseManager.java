@@ -9,10 +9,11 @@ public class DatabaseManager {
 
     // Guarda el récord en el archivo
     public static void saveRecord(String username, int score) {
+        String sanitizedUser = username != null ? username.replace(",", "_") : "Player";
         try (FileWriter fw = new FileWriter(FILE_NAME, true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
-            out.println(username + "," + score);
+            out.println(sanitizedUser + "," + score);
         } catch (IOException e) {
             System.err.println("Error al guardar el récord: " + e.getMessage());
         }
